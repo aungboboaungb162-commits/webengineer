@@ -122,7 +122,7 @@ export default function IndustriesWeServe() {
             </Link>
             
             <Link 
-              href="/QoutePage" 
+              href="/QuotePage" 
               className="bg-white text-slate-900 hover:bg-blue-50 px-8 py-4 rounded-full font-black text-xs uppercase flex items-center transition-all shadow-xl"
             >
               Get a Free Quote
