@@ -1,7 +1,7 @@
 'use client';
 
 import React from 'react';
-import { motion } from 'framer-motion';
+import { motion, Variants } from 'framer-motion'; // Variants type ကိုပါ ထည့်သွင်းလိုက်ပါတယ်
 import { ArrowRight, ChevronDown } from 'lucide-react';
 import Link from 'next/link';
 
@@ -13,9 +13,17 @@ export default function Hero() {
     });
   };
 
-  const fadeInUp = {
+  // Variants ကို Type သတ်မှတ်ပြီး ease value ကို 'as const' နဲ့ ပိတ်လိုက်ပါတယ်
+  const fadeInUp: Variants = {
     hidden: { opacity: 0, y: 20 },
-    visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: "easeOut" } }
+    visible: { 
+      opacity: 1, 
+      y: 0, 
+      transition: { 
+        duration: 0.6, 
+        ease: "easeOut" as const // 👈 ဒီနေရာက အဓိက အမှားပြင်ဆင်ချက်ပါ
+      } 
+    }
   };
 
   return (
@@ -23,12 +31,10 @@ export default function Hero() {
       {/* --- BACKGROUND LAYER --- */}
       <div className="absolute inset-0 z-0">
         <img 
-          // New high-quality Industrial HVAC/Mechanical system photo
           src="https://images.unsplash.com/photo-1513828583688-c52646db42da?q=80&w=2070" 
           alt="Spring Star Industrial HVAC Systems" 
           className="w-full h-full object-cover grayscale brightness-[0.8]"
         />
-        {/* 50% Black Overlay for text legibility */}
         <div className="absolute inset-0 bg-black/50 z-10" />
       </div>
 
