@@ -24,7 +24,7 @@ export default function RootLayout({
         <Navbar />
 
         {/* pt-40 ကို ဖယ်လိုက်ပါပြီ၊ ဒါမှ photo က header အောက်ထဲ တိုးဝင်သွားမှာပါ */}
-        <main className="min-h-screen pt-28">
+        <main className="min-h-screen pt-24">
           {children}
         </main>
 
