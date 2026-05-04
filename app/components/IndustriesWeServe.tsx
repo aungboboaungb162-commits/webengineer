@@ -34,7 +34,7 @@ export default function IndustriesWeServe() {
           className="w-full h-full object-cover" 
           alt="Industrial Engineering Background"
         />
-        <div className="absolute inset-0 bg-slate-950/70" /> 
+        <div className="absolute inset-0 bg-slate-950/90" /> 
       </div>
 
       <div className="relative z-10 max-w-7xl mx-auto px-6">
@@ -48,7 +48,7 @@ export default function IndustriesWeServe() {
                 Engineering Versatility
               </p>
             </div>
-            <h2 className="text-4xl md:text-6xl font-black mb-6 tracking-tight text-white uppercase italic">
+            <h2 className="text-4xl md:text-6xl font-black mb-6 tracking-tight text-white uppercase italic leading-tight">
               Industries <span className="text-blue-500">We Serve</span>
             </h2>
             <p className="text-slate-200 text-sm md:text-base leading-relaxed max-w-xl font-medium">
@@ -59,11 +59,10 @@ export default function IndustriesWeServe() {
         </div>
 
         {/* Industries Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-16">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-24">
           {industries.map((item, idx) => (
             <div key={idx} className="group flex flex-col shadow-2xl transition-all duration-500 hover:-translate-y-3">
-              
-              <div className={`p-10 min-h-[280px] flex flex-col justify-between transition-all duration-500 ${
+              <div className={`p-10 min-h-[300px] flex flex-col justify-between transition-all duration-500 ${
                 item.theme === 'navy' ? 'bg-slate-900' : 'bg-white'
               }`}>
                 <div>
@@ -79,7 +78,6 @@ export default function IndustriesWeServe() {
                   </p>
                 </div>
 
-                {/* Single Primary Action: Directs to Services */}
                 <Link 
                   href="/services" 
                   className={`flex items-center justify-center transition-all rounded-sm py-4 px-6 font-black text-[11px] w-full shadow-md tracking-widest ${
@@ -93,7 +91,6 @@ export default function IndustriesWeServe() {
                 </Link>
               </div>
 
-              {/* Bottom Image Area */}
               <div className="relative h-[220px] overflow-hidden">
                 <img 
                   src={item.image} 
@@ -103,31 +100,6 @@ export default function IndustriesWeServe() {
               </div>
             </div>
           ))}
-        </div>
-
-        {/* Main CTA Section: Directs to Quote/Contact Page */}
-        <div className="flex flex-col md:flex-row items-center justify-between gap-8 p-10 rounded-2xl bg-slate-900/60 backdrop-blur-md border border-white/10">
-          <div>
-            <h4 className="text-2xl font-black mb-2 uppercase italic text-white">Ready for a Technical Consultation?</h4>
-            <p className="text-slate-300 text-sm font-medium">Connect with our engineering team to secure your facility's reliability.</p>
-          </div>
-          
-          <div className="flex flex-wrap gap-4">
-            <Link 
-              href="tel:+16264810222" 
-              className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-4 rounded-full font-black text-xs uppercase flex items-center gap-2 transition-all shadow-[0_10px_20px_rgba(37,99,235,0.3)] hover:scale-105"
-            >
-              <PhoneCall size={18} />
-              Call +1 (626) 481-0222
-            </Link>
-            
-            <Link 
-              href="/QuotePage" 
-              className="bg-white text-slate-900 hover:bg-blue-50 px-8 py-4 rounded-full font-black text-xs uppercase flex items-center transition-all shadow-xl"
-            >
-              Get a Free Quote
-            </Link>
-          </div>
         </div>
 
       </div>

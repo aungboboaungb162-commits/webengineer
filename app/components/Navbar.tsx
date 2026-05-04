@@ -1,117 +1,126 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { usePathname } from 'next/navigation';
-import { ArrowUpRight, Menu, X } from "lucide-react";
+import { Menu, X } from "lucide-react";
 import LinkNext from "next/link";
 import Image from "next/image";
 
 export default function Navbar() {
   const pathname = usePathname();
   const [isOpen, setIsOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setScrolled(window.scrollY > 20);
+    };
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  // Route ပြောင်းရင် Menu အလိုအလျောက် ပိတ်ဖို့
+  useEffect(() => {
+    setIsOpen(false);
+  }, [pathname]);
 
   const getLinkStyles = (path: string, isMobile: boolean = false) => {
     const isActive = pathname === path;
     if (isMobile) {
-      return `text-lg font-bold uppercase tracking-widest py-4 border-b border-slate-100 w-full text-center ${
-        isActive ? 'text-blue-600' : 'text-slate-900'
+      return `text-lg font-bold uppercase tracking-widest py-4 w-full text-center transition-colors block ${
+        isActive ? 'text-blue-600 bg-blue-50/50' : 'text-slate-900 hover:bg-slate-50'
       }`;
     }
-    return `text-[13px] font-extrabold uppercase tracking-tight transition-all pb-1 border-b-2 ${
+    return `text-[13px] font-black uppercase tracking-[0.15em] transition-all relative py-2 ${
       isActive 
-        ? 'text-blue-700 border-blue-700' 
-        : 'text-slate-900 border-transparent hover:text-blue-700 hover:border-blue-700'
+        ? 'text-blue-600 after:absolute after:bottom-0 after:left-0 after:w-full after:h-[2px] after:bg-blue-600' 
+        : 'text-slate-700 hover:text-blue-600 after:absolute after:bottom-0 after:left-0 after:w-0 after:h-[2px] after:bg-blue-600 hover:after:w-full after:transition-all'
     }`;
   };
 
-  const navLinks = [
-    { name: 'Home', path: '/' },
-    { name: 'About Us', path: '/about' },
-    { name: 'Services', path: '/services' },
-    { name: 'Contact', path: '/#contact' },
-  ];
-
   return (
-    <header className="fixed w-full z-50 top-0 left-0 right-0">
-      <div className="max-w-[1440px] mx-auto flex items-center justify-between px-6 lg:px-8 py-4 lg:py-6">
+    <header 
+      className={`fixed top-0 w-full z-[100] transition-all duration-300 h-28 ${
+        scrolled ? 'bg-white/95 backdrop-blur-md shadow-md' : 'bg-white'
+      }`}
+    >
+      <div className="max-w-[1400px] w-full mx-auto flex items-center justify-between px-6 lg:px-10 h-full relative z-[120]">
         
-        {/* 1. Logo - Mobile မှာ ဖျောက်ထားပါတယ် (hidden lg:flex) */}
-        <div className="hidden lg:flex bg-white p-0 rounded-xl shadow-2xl overflow-hidden items-center justify-center border border-slate-100 w-[115px] h-[115px]">
-          <LinkNext href="/" className="relative w-full h-full block">
-            <Image 
-              src="/star.png" 
-              alt="Spring Star HVAC" 
-              fill
-              className="object-contain scale-[1.3]" 
-              priority 
-            />
+        {/* 1. Logo */}
+        <div className="flex items-center h-full py-2">
+          <LinkNext href="/" className="h-full block">
+            <div className="relative h-full aspect-[3/1] w-32 sm:w-48 lg:w-56 flex items-center">
+              <Image 
+                src="/starLogo_final.png" 
+                alt="Spring Star HVAC" 
+                fill
+                className="object-contain object-left scale-125 sm:scale-150 transition-transform" 
+                priority 
+              />
+            </div>
           </LinkNext>
         </div>
 
-        {/* 2. Desktop Capsule Menu (Center) */}
-        <div className="flex-1 hidden lg:flex justify-center">
-          <nav className="flex items-center bg-white px-10 py-5 rounded-full shadow-2xl gap-10 border border-slate-100">
-            {navLinks.map((link) => (
-              <LinkNext key={link.name} href={link.path} className={getLinkStyles(link.path)}>
-                {link.name}
-              </LinkNext>
-            ))}
-          </nav>
-        </div>
+        {/* 2. Desktop Nav */}
+        <nav className="hidden lg:flex items-center gap-10">
+          {[
+            { name: 'Home', path: '/' },
+            { name: 'About', path: '/about' },
+            { name: 'Services', path: '/services' },
+            { name: 'Contact', path: '/#contact' }
+          ].map((item) => (
+            <LinkNext key={item.path} href={item.path} className={getLinkStyles(item.path)}>
+              {item.name}
+            </LinkNext>
+          ))}
+        </nav>
 
-        {/* 3. Desktop Get Quote Button - Mobile မှာ ဖျောက်ထားပါတယ် (hidden lg:flex) */}
-        <div className="hidden lg:flex items-center">
-          <LinkNext href="/QuotePage">
-            <button className="relative group overflow-hidden bg-blue-600 text-white pl-8 pr-2 py-2.5 rounded-full font-bold uppercase text-[12px] tracking-widest hover:bg-blue-700 transition-all duration-300 flex items-center gap-5 shadow-lg active:scale-95 border border-white/10">
-              <span className="relative z-10">Get Quote</span>
-              <div className="bg-white text-blue-600 p-2.5 rounded-full shadow-md group-hover:rotate-45 transition-transform duration-300 ease-out">
-                <ArrowUpRight size={18} strokeWidth={3} />
-              </div>
-              <div className="absolute inset-0 bg-gradient-to-r from-white/0 via-white/10 to-white/0 -translate-x-full group-hover:translate-x-full transition-transform duration-1000" />
+        {/* 3. Action Group */}
+        <div className="flex items-center gap-4">
+          <LinkNext href="/QuotePage" className="hidden sm:block">
+            <button className="bg-slate-900 text-white px-7 py-3.5 rounded-sm font-bold uppercase text-[11px] tracking-[0.15em] hover:bg-blue-600 transition-all shadow-md">
+              Get a Quote
             </button>
           </LinkNext>
-        </div>
 
-        {/* 4. Mobile Hamburger Button - Desktop မှာ ဖျောက်ထားပါတယ် (lg:hidden) */}
-        <div className="lg:hidden w-full flex justify-end">
+          {/* Hamburger Toggle */}
           <button 
             onClick={() => setIsOpen(!isOpen)}
-            className="bg-white p-4 rounded-full shadow-xl border border-slate-100 text-blue-600"
+            className="lg:hidden p-2.5 text-slate-900 bg-slate-100 rounded-md hover:bg-blue-50 transition-colors"
           >
-            {isOpen ? <X size={28} /> : <Menu size={28} />}
+            {isOpen ? <X size={26} /> : <Menu size={26} />}
           </button>
         </div>
       </div>
 
-      {/* 5. Mobile Sidebar Menu */}
-      <div className={`fixed inset-0 bg-white z-[60] transform transition-transform duration-500 ease-in-out lg:hidden ${isOpen ? 'translate-x-0' : 'translate-x-full'}`}>
-        <div className="flex flex-col h-full p-8">
-          <div className="flex justify-end mb-12">
-            <button onClick={() => setIsOpen(false)} className="p-2 text-slate-500">
-              <X size={32} />
-            </button>
-          </div>
-          
-          <nav className="flex flex-col items-center gap-2">
-            {navLinks.map((link) => (
-              <LinkNext 
-                key={link.name} 
-                href={link.path} 
-                onClick={() => setIsOpen(false)}
-                className={getLinkStyles(link.path, true)}
-              >
-                {link.name}
-              </LinkNext>
-            ))}
-            <LinkNext href="/QuotePage" onClick={() => setIsOpen(false)} className="mt-8 w-full">
-                <button className="w-full bg-blue-600 text-white py-5 rounded-2xl font-black uppercase tracking-[0.2em] shadow-xl italic">
-                    Get Quote Now
-                </button>
+      {/* 4. Dropdown Menu Box (Mobile) */}
+      <div 
+        className={`absolute left-0 right-0 bg-white border-t border-slate-100 shadow-xl transition-all duration-500 ease-in-out lg:hidden overflow-hidden ${
+          isOpen ? 'top-28 opacity-100 translate-y-0' : 'top-28 opacity-0 -translate-y-5 pointer-events-none'
+        }`}
+      >
+        <div className="p-4 flex flex-col space-y-1">
+          {[
+            { name: 'Home', path: '/' },
+            { name: 'About Us', path: '/about' },
+            { name: 'Services', path: '/services' },
+            { name: 'Contact', path: '/#contact' }
+          ].map((item) => (
+            <LinkNext 
+              key={item.name} 
+              href={item.path} 
+              className={getLinkStyles(item.path, true)}
+            >
+              {item.name}
             </LinkNext>
-          </nav>
-
-          <div className="mt-auto text-center text-slate-400 text-xs font-bold tracking-widest uppercase">
-            © {new Date().getFullYear()} Spring Star HVAC
+          ))}
+          
+          <div className="pt-4 pb-2">
+            <LinkNext href="/QuotePage">
+              <button className="w-full bg-blue-600 text-white py-4 rounded-md font-black uppercase tracking-widest text-sm shadow-lg">
+                Request Site Visit
+              </button>
+            </LinkNext>
           </div>
         </div>
       </div>

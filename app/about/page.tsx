@@ -1,20 +1,20 @@
 'use client';
 
 import React from 'react';
+import { useRouter } from 'next/navigation';
 import { motion } from 'framer-motion';
 import { 
-  Wind, 
-  Zap, 
-  ShieldCheck, 
   CheckCircle2, 
   Eye, 
-  Target,
   Settings,
   Award,
   Building2,
-  Activity
+  Activity,
+  Microscope,
+  ArrowUpRight
 } from 'lucide-react';
 
+// Data from Draft Content
 const specializations = [
   "Pharmaceutical HVAC systems",
   "Commercial & industrial HVAC",
@@ -25,18 +25,30 @@ const specializations = [
   "HVAC upgrading works"
 ];
 
-// Partner/Experience data for visual branding
 const experienceLogos = [
-  { name: "Aventis Pharma", color: "text-blue-700" },
-  { name: "Takeda", color: "text-red-700" },
-  { name: "WuXi Biologics", color: "text-emerald-700" }
+  { name: "Aventis Pharma" },
+  { name: "Takeda" },
+  { name: "WuXi Biologics" }
 ];
 
 export default function AboutPage() {
+  const router = useRouter(); 
+
+  // Build Error ပြင်ဆင်ပြီးသား Animation Variants
+  const fadeInVariants = {
+    hidden: { opacity: 0, y: 30 },
+    visible: { 
+      opacity: 1, 
+      y: 0,
+      transition: { duration: 0.8, ease: "easeOut" }
+    }
+  } as const; // <--- as const ထည့်လိုက်ခြင်းဖြင့် TypeScript Error ကို ဖြေရှင်းပြီးသားဖြစ်သွားပါပြီ
+
   return (
     <main className="bg-white">
-      {/* --- HERO HEADER SECTION --- */}
+      {/* --- HERO HEADER --- */}
       <section className="relative h-[50vh] min-h-[500px] flex items-center justify-center overflow-hidden">
+        
         <div className="absolute inset-0 z-0">
           <img 
             src="https://images.unsplash.com/photo-1504307651254-35680f356dfd?q=80&w=2070" 
@@ -47,19 +59,16 @@ export default function AboutPage() {
         </div>
 
         <div className="relative z-10 max-w-7xl mx-auto px-6 text-center">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-          >
+          <motion.div initial="hidden" animate="visible" variants={fadeInVariants}>
             <span className="inline-block px-4 py-1.5 mb-6 text-xs font-bold tracking-[0.2em] text-blue-400 uppercase bg-blue-500/10 border border-blue-500/20 rounded-full">
-              Engineering Excellence
+              Engineering Experience
             </span>
             <h1 className="text-4xl md:text-7xl font-extrabold text-white mb-6 tracking-tight">
-              Our Legacy & <span className="text-blue-500 underline decoration-blue-500/30 underline-offset-8">Engineering</span>
+              Engineering Experience with <br />
+              <span className="text-blue-500 underline decoration-blue-500/30 underline-offset-8">Practical HVAC</span> Solutions
             </h1>
             <p className="text-slate-300 text-lg md:text-xl max-w-2xl mx-auto font-light leading-relaxed">
-              Bringing over 15 years of specialized mechanical engineering experience from international pharmaceutical giants to your local facility.
+              Spring Star HVAC was established with a strong engineering foundation in pharmaceutical, industrial, commercial, and residential HVAC systems.
             </p>
           </motion.div>
         </div>
@@ -69,54 +78,50 @@ export default function AboutPage() {
       <section className="py-24 relative overflow-hidden bg-slate-50/50">
         <div className="max-w-7xl mx-auto px-6">
           
-          {/* Experience Section */}
           <div className="mb-32">
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-start">
-              <div>
+              <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeInVariants}>
                 <div className="flex items-center gap-3 mb-6">
-                  <span className="text-blue-600 font-black uppercase tracking-[0.3em] text-xs">About Spring Star</span>
+                  <span className="text-blue-600 font-black uppercase tracking-[0.3em] text-xs">ABOUT US</span>
                   <div className="w-24 h-px bg-blue-200"></div>
                 </div>
                 <h2 className="text-4xl md:text-5xl font-bold text-slate-900 leading-tight mb-8">
-                  Engineering Practical <br />
-                  <span className="text-blue-600 italic font-serif">HVAC Solutions</span>
+                  Mechanical Engineer <br />
+                  <span className="text-blue-600 italic font-serif">15+ Years Experience</span>
                 </h2>
                 <p className="text-xl text-slate-600 leading-relaxed mb-8">
-                  Spring Star HVAC was established with a strong engineering foundation. We don't just fix units; we optimize environments for maximum efficiency and regulatory compliance.
+                  Our founder has over 15 years of experience as a Mechanical Engineer with international pharmaceutical companies.
                 </p>
                 
-                {/* Founding Expertise Badges */}
                 <div className="space-y-4">
                   <p className="text-sm font-bold text-slate-400 uppercase tracking-widest flex items-center gap-2">
-                    <Award size={16} /> Founder's Background Includes:
+                    <Award size={16} /> International Pharmaceutical Companies:
                   </p>
                   <div className="flex flex-wrap gap-4">
                     {experienceLogos.map((logo, i) => (
-                      <span key={i} className="px-5 py-2 bg-white border border-slate-200 rounded-xl shadow-sm text-slate-700 font-bold text-sm hover:border-blue-300 transition-colors">
+                      <motion.span 
+                        key={i} 
+                        whileHover={{ scale: 1.05, borderColor: '#3b82f6' }}
+                        className="px-5 py-2 bg-white border border-slate-200 rounded-xl shadow-sm text-slate-700 font-bold text-sm cursor-default transition-colors"
+                      >
                         {logo.name}
-                      </span>
+                      </motion.span>
                     ))}
                   </div>
                 </div>
-              </div>
+              </motion.div>
 
-              <div className="relative">
-                <div className="absolute -top-6 -right-6 w-32 h-32 bg-blue-600/5 rounded-full blur-3xl" />
+              <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeInVariants} className="relative">
                 <div className="bg-white p-10 rounded-[2.5rem] border border-slate-100 shadow-xl relative z-10">
                     <div className="flex items-center justify-between mb-8">
                         <h4 className="text-xl font-bold text-slate-900 flex items-center gap-3">
                             <Settings className="text-blue-600 animate-spin-slow" size={24} />
-                            Specialized Focus
+                            Specialized Experience Includes:
                         </h4>
-                        <span className="text-blue-600 font-black text-2xl">15+ <span className="text-xs uppercase text-slate-400 block tracking-tighter">Years</span></span>
                     </div>
                     <div className="grid grid-cols-1 gap-5">
                       {specializations.map((item, index) => (
-                        <motion.div 
-                          key={index} 
-                          whileHover={{ x: 5 }}
-                          className="flex items-center gap-4 group cursor-default"
-                        >
+                        <motion.div key={index} whileHover={{ x: 10 }} className="flex items-center gap-4 group">
                           <div className="w-8 h-8 rounded-lg bg-blue-50 flex items-center justify-center group-hover:bg-blue-600 transition-colors">
                             <CheckCircle2 size={16} className="text-blue-600 group-hover:text-white" />
                           </div>
@@ -125,104 +130,99 @@ export default function AboutPage() {
                       ))}
                     </div>
                 </div>
-              </div>
+              </motion.div>
             </div>
           </div>
 
-          {/* --- VISION & MISSION SECTION --- */}
+          {/* --- VISION SECTION --- */}
           <div className="relative pt-10">
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
-              
-              {/* Photo Section */}
-              <div className="lg:col-span-5 relative">
-                <div className="relative p-3 bg-white border border-slate-200 rounded-[3rem] shadow-2xl overflow-hidden group">
-                  <div className="relative rounded-[2.5rem] overflow-hidden h-[550px]">
-                    <img 
-                    src="https://images.unsplash.com/photo-1581092160562-40aa08e78837?q=80&w=2070&auto=format&fit=crop" 
+              <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeInVariants} className="lg:col-span-5 relative">
+                <div className="relative rounded-[2.5rem] overflow-hidden h-[450px] shadow-2xl group">
+                  <img 
+                    src="https://images.unsplash.com/photo-1581092160562-40aa08e78837?q=80&w=2070&fit=crop" 
                     alt="Engineering Precision" 
                     className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
                   />
-                    <div className="absolute inset-0 bg-blue-900/20 group-hover:bg-blue-900/10 transition-colors" />
+                  <div className="absolute inset-0 bg-blue-900/10 group-hover:bg-blue-900/5 transition-colors" />
+                </div>
+                <motion.div initial={{ y: 20, opacity: 0 }} whileInView={{ y: 0, opacity: 1 }} viewport={{ once: true }} transition={{ delay: 0.5 }} className="absolute -bottom-6 -right-6 bg-blue-600 text-white p-6 rounded-2xl shadow-2xl max-w-[200px] z-20 border-4 border-white">
+                    <Activity className="mb-3 text-blue-200" size={28} />
+                    <p className="font-bold text-sm leading-tight uppercase tracking-wider">Reliability Standard</p>
+                    <p className="text-blue-100 text-[11px] mt-2 italic font-light">15+ years of engineering excellence in critical systems.</p>
+                </motion.div>
+              </motion.div>
+
+              <div className="lg:col-span-7">
+                <motion.div 
+                  initial="hidden" 
+                  whileInView="visible" 
+                  viewport={{ once: true }} 
+                  variants={fadeInVariants} 
+                  whileHover={{ y: -5 }}
+                  className="bg-[#0f172a] text-white p-10 rounded-[2rem] shadow-xl border border-slate-800 relative overflow-hidden group transition-all"
+                >
+                  <div className="absolute top-0 right-0 p-8 opacity-5 group-hover:opacity-10 transition-opacity">
+                      <Eye size={120} />
                   </div>
-                </div>
-                
-                {/* Float Card */}
-                <div className="absolute -bottom-10 -right-8 bg-blue-600 text-white p-8 rounded-3xl shadow-2xl max-w-[240px] hidden md:block">
-                    <Activity className="mb-4" />
-                    <p className="font-bold text-lg leading-tight">Reliability is our standard.</p>
-                    <p className="text-blue-100 text-xs mt-2 italic">Optimizing critical environments since day one.</p>
-                </div>
-              </div>
-
-              {/* Text Cards Section */}
-              <div className="lg:col-span-7 space-y-6">
-                <div className="mb-10 lg:pl-12">
-                   <h3 className="text-4xl font-bold text-slate-900 mb-4">A Clear Vision, <br/>Defined Mission</h3>
-                   <p className="text-slate-500 max-w-md">Driven by engineering innovation and a commitment to sustainable mechanical infrastructure.</p>
-                </div>
-
-                <div className="space-y-6 lg:pl-12">
-                  <motion.div 
-                    whileHover={{ y: -5 }}
-                    className="bg-[#0f172a] text-white p-10 rounded-[2rem] shadow-xl border border-slate-800 relative overflow-hidden"
-                  >
-                    <div className="absolute top-0 right-0 p-8 opacity-5">
-                        <Target size={120} />
+                  <div className="flex items-center gap-5 mb-6">
+                    <div className="w-12 h-12 rounded-xl bg-blue-500/10 flex items-center justify-center border border-blue-500/20">
+                      <Eye className="text-blue-400" size={24} />
                     </div>
-                    <div className="flex items-center gap-5 mb-4">
-                      <div className="w-12 h-12 rounded-xl bg-blue-500/10 flex items-center justify-center border border-blue-500/20">
-                        <Target className="text-blue-400" size={24} />
-                      </div>
-                      <h4 className="text-2xl font-bold tracking-tight">Our Mission</h4>
-                    </div>
-                    <p className="text-slate-400 leading-relaxed">
-                      To deliver high-quality, energy-efficient HVAC systems through expert engineering and practical management, ensuring optimal facility performance across industrial sectors. We focus on 100% reliability and precision.
-                    </p>
-                  </motion.div>
-
-                  <motion.div 
-                    whileHover={{ y: -5 }}
-                    className="bg-white text-slate-900 p-10 rounded-[2rem] shadow-xl border border-slate-100 relative overflow-hidden"
-                  >
-                    <div className="flex items-center gap-5 mb-4">
-                      <div className="w-12 h-12 rounded-xl bg-blue-50 flex items-center justify-center border border-blue-100">
-                        <Eye className="text-blue-600" size={24} />
-                      </div>
-                      <h4 className="text-2xl font-bold tracking-tight text-slate-900">Our Vision</h4>
-                    </div>
-                    <p className="text-slate-500 leading-relaxed">
-                      To be a leading force in delivering sustainable mechanical solutions that empower global industrial growth. We aim to set the regional benchmark for engineering excellence in HVAC and Utility systems.
-                    </p>
-                  </motion.div>
-                </div>
+                    <h4 className="text-3xl font-bold tracking-tight">OUR VISION</h4>
+                  </div>
+                  <p className="text-slate-300 text-xl leading-relaxed relative z-10">
+                    To become a trusted one-stop HVAC and mechanical solutions provider for commercial, industrial, and critical facilities.
+                  </p>
+                  <div className="mt-8 flex items-center gap-2 text-blue-400 font-bold text-sm uppercase tracking-widest">
+                      Quality Focused <ArrowUpRight size={16} />
+                  </div>
+                </motion.div>
               </div>
             </div>
           </div>
 
-          {/* --- BOTTOM FEATURE BAR --- */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mt-32 pt-20 border-t border-slate-200">
-            <div className="p-8 rounded-3xl hover:bg-white hover:shadow-xl transition-all duration-300 border border-transparent hover:border-slate-100">
-              <div className="w-12 h-12 rounded-xl bg-blue-600 text-white flex items-center justify-center mb-6 shadow-lg shadow-blue-200">
-                <Building2 size={24} />
-              </div>
-              <h5 className="font-bold text-slate-900 mb-3 text-lg">Industrial Focus</h5>
-              <p className="text-slate-500 text-sm leading-relaxed">Specialized in regulated environments like Pharma, Food, and Medical device plants.</p>
+          {/* --- INDUSTRIES WE SERVE --- */}
+          <div className="mt-32 pt-20 border-t border-slate-200">
+            <div className="text-center mb-16">
+              <h3 className="text-3xl font-bold text-slate-900">INDUSTRIES WE SERVE</h3>
+              <div className="w-24 h-1 bg-blue-600 mx-auto mt-4"></div>
             </div>
             
-            <div className="p-8 rounded-3xl hover:bg-white hover:shadow-xl transition-all duration-300 border border-transparent hover:border-slate-100">
-              <div className="w-12 h-12 rounded-xl bg-blue-600 text-white flex items-center justify-center mb-6 shadow-lg shadow-blue-200">
-                <Zap size={24} />
-              </div>
-              <h5 className="font-bold text-slate-900 mb-3 text-lg">Energy Saving</h5>
-              <p className="text-slate-500 text-sm leading-relaxed">Implementing energy-efficient upgrades that reduce operational costs and carbon footprint.</p>
-            </div>
-
-            <div className="p-8 rounded-3xl hover:bg-white hover:shadow-xl transition-all duration-300 border border-transparent hover:border-slate-100">
-              <div className="w-12 h-12 rounded-xl bg-blue-600 text-white flex items-center justify-center mb-6 shadow-lg shadow-blue-200">
-                <ShieldCheck size={24} />
-              </div>
-              <h5 className="font-bold text-slate-900 mb-3 text-lg">Proven Reliability</h5>
-              <p className="text-slate-500 text-sm leading-relaxed">Leveraging 15+ years of project management expertise to ensure zero downtime.</p>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+              {[
+                { 
+                  icon: <Building2 />, 
+                  title: "Commercial", 
+                  desc: "Offices, Retail shops, Restaurants, Warehouses" 
+                },
+                { 
+                  icon: <Microscope />, 
+                  title: "Industrial & Regulated Facilities", 
+                  desc: "Pharmaceutical, Laboratories, Manufacturing Plants, Cold Storage" 
+                },
+                { 
+                  icon: <Activity />, 
+                  title: "Residential", 
+                  desc: "Houses, Apartments, Condominiums" 
+                }
+              ].map((feature, i) => (
+                <motion.div 
+                  key={i}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: i * 0.2 }}
+                  whileHover={{ y: -10 }}
+                  className="p-8 rounded-[2.5rem] bg-white border border-slate-100 shadow-lg shadow-slate-200/50 text-center transition-all hover:border-blue-100 group"
+                >
+                  <div className="w-16 h-16 mx-auto mb-6 bg-blue-50 rounded-full flex items-center justify-center text-blue-600 group-hover:bg-blue-600 group-hover:text-white transition-colors">
+                    {React.cloneElement(feature.icon as React.ReactElement<any>, { size: 32 })}
+                  </div>
+                  <h5 className="font-bold text-slate-900 mb-3 text-lg">{feature.title}</h5>
+                  <p className="text-slate-500 text-sm leading-relaxed">{feature.desc}</p>
+                </motion.div>
+              ))}
             </div>
           </div>
         </div>
